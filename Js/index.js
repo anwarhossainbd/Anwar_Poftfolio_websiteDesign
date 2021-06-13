@@ -19,3 +19,52 @@ navOpen.addEventListener("click", () => {
 });
 
 
+// Fix Navbar
+const navBar = document.querySelector(".navigation");
+window.addEventListener("scroll", () => {
+    const navHeight = navBar.getBoundingClientRect().height;
+    const scrollHeight = window.pageYOffset;
+    if (scrollHeight > navHeight) {
+        navBar.classList.add("fix-nav");
+    } else {
+        navBar.classList.remove("fix-nav");
+    }
+
+});
+
+// Smooth Scroll
+const links = document.querySelectorAll(".scroll-link");
+const linksContainer = document.querySelector(".nav-list");
+
+links.forEach(link => {
+    link.addEventListener("click", e => {
+        // Prevent Default
+        e.preventDefault();
+        // Scroll to a specific spot
+        const id = e.currentTarget.getAttribute("href").slice(1);
+        const el = document.getElementById(id);
+
+        const navHeight = navBar.getBoundingClientRect().height;
+        const containerHeight = linksContainer.getBoundingClientRect().height;
+        const fixNav = navBar.classList.contains("fix-nav");
+        let position = el.offsetTop - navHeight;
+
+        if (navHeight > 82) {
+            position = position + containerHeight;
+        } else if (!fixNav) {
+            position = position + navHeight + navHeight;
+        }
+
+        window.scrollTo({
+            left: 0,
+            top: position,
+        });
+
+        navContainer.style.height = "0";
+    });
+});
+
+
+AOS.init();
+
+
